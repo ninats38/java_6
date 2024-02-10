@@ -1,0 +1,50 @@
+import java.util.*;
+
+class PhoneBookEntry {
+    public final String firstName;
+    public final String lastName;
+    public final String phoneNumber;
+
+    public PhoneBookEntry(String firstName, String lastName, String phoneNumber) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+    }
+
+    // ... реализация методов equals() и hashCode()
+}
+
+public class PhoneBook {
+    private Map<String, Set<PhoneBookEntry>> firstNameMap;
+    private Map<String, Set<PhoneBookEntry>> lastNameMap;
+    private Map<String, Set<PhoneBookEntry>> phoneNumberMap;
+
+    public PhoneBook() {
+        firstNameMap = new HashMap<>();
+        lastNameMap = new HashMap<>();
+        phoneNumberMap = new HashMap<>();
+    }
+
+    public void add(PhoneBookEntry entry) {
+        Set<PhoneBookEntry> set = firstNameMap.computeIfAbsent(entry.firstName, k -> new HashSet<>());
+        set.add(entry);
+
+        set = lastNameMap.computeIfAbsent(entry.lastName, k -> new HashSet<>());
+        set.add(entry);
+
+        set = phoneNumberMap.computeIfAbsent(entry.phoneNumber, k -> new HashSet<>());
+        set.add(entry);
+    }
+
+    public Set<PhoneBookEntry> getByFirstName(String firstName) {
+        return firstNameMap.get(firstName);
+    }
+
+    public Set<PhoneBookEntry> getByLastName(String lastName) {
+        return lastNameMap.get(lastName);
+    }
+
+    public Set<PhoneBookEntry> getByPhoneNumber(String phoneNumber) {
+        return phoneNumberMap.get(phoneNumber);
+    }
+}
